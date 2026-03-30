@@ -1,0 +1,130 @@
+{
+        "id": "a76255bd-8473-4095-9e12-59cb070201c5",
+        "name": "Samsung Galaxy S25",
+        "image": "http://localhost:8080/bej3/images/galaxy-s25-blue-1-b404affd42.webp",
+        "status": 1,
+        "createDate": "2025-09-18",
+        "introImages": [
+            "http://localhost:8080/bej3/images/slider-tinh-nang-2-1.webp",
+            "http://localhost:8080/bej3/images/slider-tinh-nang-3.webp",
+            "http://localhost:8080/bej3/images/slider-tinh-nang-4.webp",
+            "http://localhost:8080/bej3/images/slider-tinh-nang-5.webp",
+            "http://localhost:8080/bej3/images/slider-tinh-nang-6.webp"
+        ],
+        "variants": [
+            {
+                "id": "d6cc57ad-d93d-43ab-89cd-9a3df4d626b6",
+                "color": "Xanh Lá",
+                "detailImages": [
+                    "http://localhost:8080/bej3/images/galaxy-s25-mint-1-81ad52cf9f.webp",
+                    "http://localhost:8080/bej3/images/galaxy-s25-mint-3.webp",
+                    "http://localhost:8080/bej3/images/galaxy-s25-mint-2.webp",
+                    "http://localhost:8080/bej3/images/galaxy-s25-mint-4.webp",
+                    "http://localhost:8080/bej3/images/galaxy-s25-mint-5.webp",
+                    "http://localhost:8080/bej3/images/galaxy-s25-mint-1.webp"
+                ],
+                "attributes": [
+                    {
+                        "name": "12 / 256",
+                        "originalPrice": 22990000,
+                        "finalPrice": 17490000,
+                        "discount": 0,
+                        "stockQuantity": 12,
+                        "soldQuantity": 3324
+                    },
+                    {
+                        "name": "12 / 512",
+                        "originalPrice": 20490000,
+                        "finalPrice": 25990000,
+                        "discount": 0,
+                        "stockQuantity": 3,
+                        "soldQuantity": 44
+                    }
+                ]
+            },
+            {
+                "id": "e47feec2-e283-47eb-aacb-5fe6618a6952",
+                "color": "Xanh dương",
+                "detailImages": [
+                    "http://localhost:8080/bej3/images/galaxy-s25-blue-1-b404affd42.webp",
+                    "http://localhost:8080/bej3/images/galaxy-s25-blue-2.webp",
+                    "http://localhost:8080/bej3/images/galaxy-s25-blue-1.webp",
+                    "http://localhost:8080/bej3/images/galaxy-s25-blue-3.webp"
+                ],
+                "attributes": [
+                    {
+                        "name": "16 / 1T",
+                        "originalPrice": 29990000,
+                        "finalPrice": 0,
+                        "discount": 0,
+                        "stockQuantity": 27,
+                        "soldQuantity": 0
+                    }
+                ]
+            }
+        ]
+    }
+
+
+function objectToFormData(obj, formData = new FormData(), parentKey = "") {
+  if (obj === null || obj === undefined) return formData;
+
+  // Nếu là File (ảnh upload)
+  if (obj instanceof File || obj instanceof Blob) {
+    if (parentKey) {
+      formData.append(parentKey, obj);
+      console.log(`[FormData-Check] ${parentKey} -> File(${obj.name})`);
+    }
+  }
+  // Nếu là Array
+  else if (Array.isArray(obj)) {
+    obj.forEach((value, index) => {
+      // Dùng dot notation để Spring map
+      const key = parentKey ? `${parentKey}.${index}` : `${index}`;
+      objectToFormData(value, formData, key);
+    });
+  }
+  // Nếu là Object
+  else if (typeof obj === "object" && !(obj instanceof Date)) {
+    Object.keys(obj).forEach((key) => {
+      // Bỏ qua preview và createDate
+      if (key.toLowerCase().includes("preview") || key === "createDate") return;
+
+      const value = obj[key];
+      const fullKey = parentKey ? `${parentKey}.${key}` : key;
+
+      // Xử lý riêng cho image chính
+      if (fullKey === "image") {
+        if (value instanceof File) {
+          formData.append(fullKey, value);
+          console.log(`[FormData-Check] ${fullKey} -> File(${value.name})`);
+        } else {
+          // bỏ qua nếu chỉ là URL (string)
+          console.log(`[FormData-Check] ${fullKey} -> BỎ QUA (URL cũ)`);
+        }
+        return;
+      }
+
+      // Nếu là file trong introImages / detailImages
+      if (key === "file" && value instanceof File) {
+        formData.append(fullKey, value);
+        console.log(`[FormData-Check] ${fullKey} -> File(${value.name})`);
+      } else {
+        objectToFormData(value, formData, fullKey);
+      }
+    });
+  }
+  // Bỏ qua Date
+  else if (obj instanceof Date) {
+    return formData;
+  }
+  // Nếu là primitive (string, number, boolean, id...)
+  else {
+    if (parentKey && obj !== null) {
+      formData.append(parentKey, obj);
+      console.log(`[FormData-Check] ${parentKey} -> ${obj}`);
+    }
+  }
+
+  return formData;
+}

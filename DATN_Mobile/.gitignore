@@ -1,0 +1,89 @@
+# =========================================
+# Android / Kotlin / Jetpack Compose ignore
+# =========================================
+
+# Gradle
+.gradle/
+build/
+*/build/
+
+# Local configuration
+local.properties
+*.iml
+.gradle/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/misc.xml
+.idea/modules.xml
+idea/
+*.ipr
+*.iws
+out/
+
+# KAPT
+kaptGenerated/
+kapt/
+
+# Kotlin build cache
+kotlin/
+kotlin-js-store/
+
+# Android Studio
+/.idea
+/.idea/*
+
+# Signing keys
+*.keystore
+*.jks
+*.pem
+*.json
+
+# Jetpack Compose previews
+*.layout
+captures/
+
+# Generated files
+generated/
+**/build/
+**/generated/
+navigation.json
+
+# Log files
+*.log
+
+# Gradle Wrapper
+!gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+gradle/wrapper/gradle-wrapper.jar
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.orig
+*.bak
+
+# APK/AAB outputs
+*.apk
+*.ap_
+*.aab
+
+# NDK
+obj/
+*.o
+
+# Testing
+test-output/
+reports/
+
+# ==========================
+# Jetpack Compose
+# ==========================
+# Compose compiler caches
+compose_compiler/
+compose-cache/

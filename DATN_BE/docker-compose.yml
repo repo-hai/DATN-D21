@@ -1,0 +1,75 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=new_bej_sp3
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  rabbitmq:
+    # Build từ file Dockerfile.rabbitmq
+    build:
+      context: .
+      dockerfile: Dockerfile.rabbitmq
+    container_name: rabbitmq_service
+    ports:
+      - "5672:5672"     # Port cho Java App
+      - "15672:15672"   # Port quản lý UI
+      - "61613:61613"   # Port TCP Stomp
+      - "15674:15674"   # Port Web Socket (Quan trọng cho Frontend/Mobile)
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    # Không dùng build: . nữa mà dùng image Maven trực tiếp để chạy code
+    image: maven:3.9.9-eclipse-temurin-21
+    container_name: spring_app
+    working_dir: /app
+    depends_on:
+      mysql:
+        condition: service_healthy 
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    # Load biến môi trường từ file .env (không commit lên git)
+    env_file:
+      - .env
+
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    # [QUAN TRỌNG] Ánh xạ code từ máy thật vào container
+    volumes:
+      - ./pom.xml:/app/pom.xml        # Link file cấu hình maven
+      - ./src:/app/src                # Link toàn bộ source code
+      - maven_repo:/root/.m2          # Lưu cache thư viện để không phải tải lại mỗi lần bật
+      # Exclude target để tránh conflict
+      - /app/target
+    # [QUAN TRỌNG] Lệnh chạy trực tiếp code source
+    command: mvn spring-boot:run
+
+# Khai báo volumes để Docker tự quản lý (Hoạt động tốt trên cả Windows/Linux)
+volumes:
+  rabbitmq_data:
+  mysql_data:
+  maven_repo:
