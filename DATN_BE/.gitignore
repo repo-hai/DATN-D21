@@ -37,4 +37,4 @@ build/
 *.json
 
 # Environment variables
-.env
+#.env
