@@ -34,7 +34,7 @@ build/
 
 /src/main/java/com/DATN/Bej/entity/product/adu.txt
 
-*.json
+#*.json
 
 # Environment variables
 #.env
