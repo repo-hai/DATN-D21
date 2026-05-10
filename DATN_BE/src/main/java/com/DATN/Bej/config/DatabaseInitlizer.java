@@ -12,6 +12,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.DATN.Bej.entity.identity.User;
 import com.DATN.Bej.entity.product.Category;
 import com.DATN.Bej.repository.RoleRepository;
 import com.DATN.Bej.repository.UserRepository;
@@ -57,6 +58,7 @@ public class DatabaseInitlizer implements CommandLineRunner{
         
         // Initialize categories nếu chưa có
         initializeCategories();
+        resetDevPasswords();
     }
     
     /**
@@ -151,5 +153,24 @@ public class DatabaseInitlizer implements CommandLineRunner{
             System.err.println("Error executing " + scriptPath + ": " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void resetDevPasswords() {
+        resetPasswordByPhoneNumber("admin", "123456");
+        resetPasswordByPhoneNumber("0912345678", "123456");
+        resetPasswordByPhoneNumber("0923456789", "123456");
+        resetPasswordByPhoneNumber("0934567890", "123456");
+        resetPasswordByPhoneNumber("0945678901", "123456");
+        resetPasswordByPhoneNumber("0956789012", "123456");
+        resetPasswordByPhoneNumber("0111111111", "123456");
+        resetPasswordByPhoneNumber("0123123123", "123456");
+    }
+
+    private void resetPasswordByPhoneNumber(String phoneNumber, String rawPassword) {
+        userRepository.findByPhoneNumber(phoneNumber).ifPresent(user -> {
+            user.setPassword(passwordEncoder.encode(rawPassword));
+            userRepository.save(user);
+            System.out.println("Reset password for account: " + phoneNumber);
+        });
     }
 }

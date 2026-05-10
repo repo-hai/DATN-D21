@@ -18,7 +18,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, String> {
 //           "AND oi.order.status IN (2, 5) " +
 //           "AND oi.order.type = 0 " +
            "GROUP BY oi.productA.id " +
-           "ORDER BY totalSold DESC")
+           "ORDER BY totalSold DESC, totalRevenue DESC")
     List<Object[]> findTopProductsByDateRange(@Param("startDate") LocalDate startDate, 
                                                @Param("endDate") LocalDate endDate);
 }

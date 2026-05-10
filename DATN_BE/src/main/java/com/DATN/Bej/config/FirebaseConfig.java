@@ -53,8 +53,14 @@ public class FirebaseConfig {
                 "- src/main/resources/datn-d21-firebase-adminsdk-fbsvc-d2772bc9ae.json\n" +
                 "- target/classes/datn-d21-firebase-adminsdk-fbsvc-d2772bc9ae.json\n" +
                 "- datn-d21-firebase-adminsdk-fbsvc-d2772bc9ae.json";
-            log.error(errorMsg);
-            throw new IOException(errorMsg);
+            log.warn("{}\n⚠️ Firebase will be disabled in local/dev mode.", errorMsg);
+
+            // PRODUCTION BEHAVIOR:
+            // Bật lại 2 dòng dưới nếu muốn ứng dụng fail-fast khi thiếu file Firebase.
+            // log.error(errorMsg);
+            // throw new IOException(errorMsg);
+
+            return null;
         }
         
         log.info("✅ Firebase config file found: {}", file.getAbsolutePath());

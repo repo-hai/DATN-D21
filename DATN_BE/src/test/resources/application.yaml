@@ -1,0 +1,56 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:datn_test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  sql:
+    init:
+      mode: never
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    stomp:
+      port: 61613
+    username: guest
+    password: guest
+
+jwt:
+  signerKey: test-signer-key-1234567890
+
+cloudinary:
+  cloud-name: test-cloud
+  api-key: test-api-key
+  api-secret: test-api-secret
+
+vnpay:
+  payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  returnUrl: http://localhost:8080/bej3/payment/vnpay-return
+  ipnUrl: http://localhost:8080/bej3/payment/vnpay-callback
+  tmnCode: TESTTMNCODE
+  hashSecret: TESTHASHSECRET
+
+zalopay:
+  appId: TESTAPPID
+  key1: TESTKEY1
+  key2: TESTKEY2
+  createOrderUrl: https://sb-openapi.zalopay.vn/v2/create
+  callbackUrl: http://localhost:8080/bej3/payment/zalopay/callback
+  returnUrl: http://localhost:8080/bej3/payment/zalopay/return
+
+firebase:
+  config:
+    service-account-key-path: classpath:datn-d21-firebase-adminsdk-fbsvc-d2772bc9ae.json
+    project-id: test-project
+    database-url: https://test.firebaseio.com
+    storage-bucket: test.appspot.com

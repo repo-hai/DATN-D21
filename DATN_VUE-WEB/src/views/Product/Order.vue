@@ -502,14 +502,14 @@ const formatDateTime = (dateStr) => {
 }
 
 const addNote = () => {
-  if (!newNoteContent.trim()) return
+  if (!newNoteContent.value.trim()) return
 
-  notes.push({
+  notes.value.push({
     user: 'Người thao tác hiện tại', // lấy tên user đăng nhập
-    content: newNoteContent,
+    content: newNoteContent.value,
     createdAt: new Date().toISOString(),
   })
-  newNoteContent = ''
+  newNoteContent.value = ''
 }
 
 // ============================================================================ FETCH ORDERS =========================

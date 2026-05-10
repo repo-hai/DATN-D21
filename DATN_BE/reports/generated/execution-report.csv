@@ -1,0 +1,3 @@
+﻿build_time_iso,git_branch,git_commit,maven_command,java_version,maven_version,total_tests,passed_tests,failed_tests,error_tests,skipped_tests,success_rate_percent,total_duration_seconds,surefire_total,surefire_passed,surefire_failed,surefire_errors,surefire_skipped,failsafe_total,failsafe_passed,failsafe_failed,failsafe_errors,failsafe_skipped
+2026-04-12T18:55:27,main,1fd76f6,.\\mvnw.cmd jacoco:prepare-agent test jacoco:report -DskipITs=true,java version "22.0.2" 2024-07-16,Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937),44,44,0,0,0,100.00%,32.144,44,44,0,0,0,0,0,0,0,0
+

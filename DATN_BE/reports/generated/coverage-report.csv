@@ -1,0 +1,3 @@
+﻿build_time_iso,git_branch,git_commit,inst_covered,inst_missed,inst_total,inst_coverage_percent,branch_covered,branch_missed,branch_total,branch_coverage_percent,line_covered,line_missed,line_total,line_coverage_percent,method_covered,method_missed,method_total,method_coverage_percent,class_covered,class_missed,class_total,class_coverage_percent,threshold_line_percent,threshold_branch_percent,line_gate_result,branch_gate_result
+2026-04-12T18:55:27,main,1fd76f6,3260,11107,14367,22.69%,101,874,975,10.36%,722,2714,3436,21.01%,140,341,481,29.11%,69,17,86,80.23%,80.00%,70.00%,FAIL,FAIL
+
